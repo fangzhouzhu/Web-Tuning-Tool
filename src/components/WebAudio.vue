@@ -63,6 +63,9 @@ export default defineComponent({
       play.value = !play.value;
     }
     function showTypeChange() {
+      if (!audioContext.value) {
+        return;
+      }
       audioDraw(
         'audioCanvas',
         showType.value,
@@ -127,7 +130,8 @@ export default defineComponent({
       };
     }
     onMounted(async () => {
-      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      window.AudioContext =
+        window.AudioContext || (window as any).webkitAudioContext;
       if (!window.AudioContext) {
         message.error('当前浏览器不支持Web Audio API');
         return;
